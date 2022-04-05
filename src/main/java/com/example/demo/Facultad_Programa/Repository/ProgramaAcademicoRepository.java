@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository("programaAcademicoRepository")
 public interface ProgramaAcademicoRepository extends JpaRepository<ProgramaAcademico, Long> {
     
+    
 }
