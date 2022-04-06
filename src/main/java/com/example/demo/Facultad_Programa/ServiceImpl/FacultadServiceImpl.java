@@ -78,4 +78,18 @@ public class FacultadServiceImpl implements FacultadService{
         return null;
     }
 
+
+    @Override
+    public FacultadModel buscarPorNombre(String nombre) {
+        FacultadModel facultad = new FacultadModel();
+        List<FacultadModel> listado = getAllFacultades();
+
+        for(FacultadModel l : listado){
+            if(l.getNombre().equalsIgnoreCase(nombre)){
+                facultad = l;
+            }
+        }
+        return facultad;
+    }
+
 }

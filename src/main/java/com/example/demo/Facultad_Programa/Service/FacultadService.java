@@ -14,4 +14,6 @@ public interface FacultadService {
 
     public abstract boolean deleteFacultad(Long id);
 
+    public abstract FacultadModel buscarPorNombre(String nombre);
+
 }

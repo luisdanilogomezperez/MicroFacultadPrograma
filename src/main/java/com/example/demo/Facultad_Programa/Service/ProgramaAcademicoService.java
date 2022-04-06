@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.example.demo.Facultad_Programa.Model.ProgramaAcademicoModel;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public interface ProgramaAcademicoService {
     
     public abstract List<ProgramaAcademicoModel> getAllProgramasAcademicos();

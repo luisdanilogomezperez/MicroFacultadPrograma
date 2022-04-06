@@ -78,6 +78,23 @@ public class FacultadController {
         return resultado;
 	}
 
+	@RequestMapping(value = "/facultad/{name}", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<FacultadModel> findFacultadXNombre(@RequestBody FacultadModel facultad) {
+		HashMap<String, String> msg = new HashMap<>();
+		FacultadModel facultadModel = null;
+		LOG.info("ESTA ENTRANDO AL CONTROLLER DE RESIDUOS PROFESIONALES");
+		try {
+			
+			facultadModel = facultadService.crearFacultad(facultad);
+			
+			return new ResponseEntity<>(facultadModel, HttpStatus.OK);
+		} catch (HibernateException e) {
+			LOG.error("Error: " + e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@RequestMapping(value ="/prueba2")
 	public String prueba(){
 
