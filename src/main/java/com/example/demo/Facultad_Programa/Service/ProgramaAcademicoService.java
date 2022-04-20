@@ -11,7 +11,7 @@ public interface ProgramaAcademicoService {
     
     public abstract List<ProgramaAcademicoModel> getAllProgramasAcademicos();
 
-    public abstract List<ProgramaAcademicoModel> getPrograma(Long id);
+    public abstract ProgramaAcademicoModel getProgramaWithId(Long id);
 
     public abstract ProgramaAcademicoModel crearPrograma(ProgramaAcademicoModel programa);
 

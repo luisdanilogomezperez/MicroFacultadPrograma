@@ -69,9 +69,17 @@ public class ProgramaAcademicoServiceImpl implements ProgramaAcademicoService{
     }
 
     @Override
-    public List<ProgramaAcademicoModel> getPrograma(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+    public ProgramaAcademicoModel getProgramaWithId(Long id) {
+        ProgramaAcademicoModel programa = new ProgramaAcademicoModel();
+        List<ProgramaAcademicoModel> listado = getAllProgramasAcademicos();
+
+        for(ProgramaAcademicoModel l : listado){
+
+            if(l.getId() == id){
+                programa=l;
+            }
+        }
+        return programa;
     }
     
 }

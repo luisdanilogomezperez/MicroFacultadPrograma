@@ -95,6 +95,19 @@ public class FacultadController {
 		}
 	}
 
+	@RequestMapping(value = "/facultad/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<FacultadModel> getFacultad(@PathVariable long id) {
+		FacultadModel FacultadModelReturn = null;
+		try {
+			FacultadModelReturn = facultadService.getFacultadWithId(id);
+			return new ResponseEntity<>(FacultadModelReturn, HttpStatus.OK);
+		} catch (HibernateException e) {
+			LOG.info(" Error : " + e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@RequestMapping(value ="/prueba2")
 	public String prueba(){
 

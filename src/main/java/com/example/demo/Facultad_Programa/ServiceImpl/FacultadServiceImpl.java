@@ -73,9 +73,18 @@ public class FacultadServiceImpl implements FacultadService{
 
 
     @Override
-    public FacultadModel getFacultad(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+    public FacultadModel getFacultadWithId(Long id) {
+        FacultadModel facultad = new FacultadModel();
+        List<FacultadModel> listado = getAllFacultades();
+
+        for(FacultadModel l : listado){
+
+            if(l.getId() == id){
+                facultad=l;
+            }
+        }
+
+        return facultad;
     }
 
 

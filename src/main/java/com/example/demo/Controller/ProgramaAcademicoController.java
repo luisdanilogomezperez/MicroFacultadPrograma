@@ -80,6 +80,19 @@ public class ProgramaAcademicoController {
         return resultado;
 	}
 
+	@RequestMapping(value = "/programas-acad/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<ProgramaAcademicoModel> getProgramaAcad(@PathVariable long id) {
+		ProgramaAcademicoModel ProgramaAcademicoModelReturn = null;
+		try {
+			ProgramaAcademicoModelReturn = programaAcademicoService.getProgramaWithId(id);
+			return new ResponseEntity<>(ProgramaAcademicoModelReturn, HttpStatus.OK);
+		} catch (HibernateException e) {
+			LOG.info(" Error : " + e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@RequestMapping(value ="/prueba3")
 	public String prueba(){
 

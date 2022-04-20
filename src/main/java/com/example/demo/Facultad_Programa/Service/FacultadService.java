@@ -8,7 +8,7 @@ public interface FacultadService {
     
     public abstract List<FacultadModel> getAllFacultades();
 
-    public abstract FacultadModel getFacultad(Long id);
+    public abstract FacultadModel getFacultadWithId(Long id);
 
     public abstract FacultadModel crearFacultad(FacultadModel facultad);
 
