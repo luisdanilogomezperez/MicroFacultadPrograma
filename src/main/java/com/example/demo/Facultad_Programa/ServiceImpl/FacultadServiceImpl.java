@@ -101,4 +101,26 @@ public class FacultadServiceImpl implements FacultadService{
         return facultad;
     }
 
+
+    @Override
+    public Boolean agregaMasiva(List<FacultadModel> facultad) {
+        Boolean exito = false;
+
+        for(FacultadModel l : facultad){
+            try{
+                Facultad residuo = facultadRepository.save(facultadConverter.modelToEntity(l));
+                
+                if(residuo!=null){
+                    exito=true;
+                }else{
+                    exito=false;
+                }
+            }catch (Exception e) {
+                //TODO: handle exception
+            }
+        }
+        return exito;
+    }
+
+
 }

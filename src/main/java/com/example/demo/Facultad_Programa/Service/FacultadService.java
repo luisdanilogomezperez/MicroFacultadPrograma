@@ -16,4 +16,6 @@ public interface FacultadService {
 
     public abstract FacultadModel buscarPorNombre(String nombre);
 
+    public abstract Boolean agregaMasiva(List<FacultadModel> facultad);
+
 }

@@ -50,9 +50,8 @@ public class FacultadController {
 	@RequestMapping(value = "/facultad/add", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<FacultadModel> addFacultad(@RequestBody FacultadModel facultad) {
-		HashMap<String, String> msg = new HashMap<>();
+		
 		FacultadModel facultadModel = null;
-		LOG.info("ESTA ENTRANDO AL CONTROLLER DE RESIDUOS PROFESIONALES");
 		try {
 			
 			facultadModel = facultadService.crearFacultad(facultad);
@@ -78,23 +77,6 @@ public class FacultadController {
         return resultado;
 	}
 
-	@RequestMapping(value = "/facultad/{name}", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<FacultadModel> findFacultadXNombre(@RequestBody FacultadModel facultad) {
-		HashMap<String, String> msg = new HashMap<>();
-		FacultadModel facultadModel = null;
-		LOG.info("ESTA ENTRANDO AL CONTROLLER DE RESIDUOS PROFESIONALES");
-		try {
-			
-			facultadModel = facultadService.crearFacultad(facultad);
-			
-			return new ResponseEntity<>(facultadModel, HttpStatus.OK);
-		} catch (HibernateException e) {
-			LOG.error("Error: " + e.getMessage());
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
 	@RequestMapping(value = "/facultad/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<FacultadModel> getFacultad(@PathVariable long id) {
@@ -108,10 +90,34 @@ public class FacultadController {
 		}
 	}
 
-	@RequestMapping(value ="/prueba2")
-	public String prueba(){
+	
+	@RequestMapping(value = "/facultad/nombre/{nombre}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<FacultadModel> findFacultadXNombre(@PathVariable String nombre) {
+		FacultadModel FacultadModelReturn = null;
+		try {
+			FacultadModelReturn = facultadService.buscarPorNombre(nombre);
+			return new ResponseEntity<>(FacultadModelReturn, HttpStatus.OK);
+		} catch (HibernateException e) {
+			LOG.info(" Error : " + e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
-		return "prueba 2, exitosa";
+	@RequestMapping(value = "/facultad/addMas", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Boolean> addfacultadMasivo(@RequestBody List<FacultadModel> facultad) {
+		
+		Boolean facultadModel = null;
+		try {
+			
+			facultadModel = facultadService.agregaMasiva(facultad);
+			
+			return new ResponseEntity<>(facultadModel, HttpStatus.OK);
+		} catch (HibernateException e) {
+			LOG.error("Error: " + e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }

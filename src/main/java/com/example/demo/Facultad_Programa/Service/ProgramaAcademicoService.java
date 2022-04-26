@@ -16,4 +16,8 @@ public interface ProgramaAcademicoService {
     public abstract ProgramaAcademicoModel crearPrograma(ProgramaAcademicoModel programa);
 
     public abstract boolean deletePrograma(Long id);
+
+    public abstract ProgramaAcademicoModel buscarPorNombre(String nombre);
+
+    public abstract Boolean agregaMasiva(List<ProgramaAcademicoModel> programa);
 }

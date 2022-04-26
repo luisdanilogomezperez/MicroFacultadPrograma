@@ -52,9 +52,8 @@ public class ProgramaAcademicoController {
 	@RequestMapping(value = "/programas-acad/add", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<ProgramaAcademicoModel> addPrograma(@RequestBody ProgramaAcademicoModel programa) {
-		HashMap<String, String> msg = new HashMap<>();
+		
 		ProgramaAcademicoModel usuarioModel = null;
-		LOG.info("ESTA ENTRANDO AL CONTROLLER DE RESIDUOS PROFESIONALES");
 		try {
 			
 			usuarioModel = programaAcademicoService.crearPrograma(programa);
@@ -93,10 +92,33 @@ public class ProgramaAcademicoController {
 		}
 	}
 
-	@RequestMapping(value ="/prueba3")
-	public String prueba(){
+	@RequestMapping(value = "/programas-acad/nombre/{nombre}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<ProgramaAcademicoModel> findProgramaXNombre(@PathVariable String nombre) {
+		ProgramaAcademicoModel ProgramaAcademicoModelReturn = null;
+		try {
+			ProgramaAcademicoModelReturn = programaAcademicoService.buscarPorNombre(nombre);
+			return new ResponseEntity<>(ProgramaAcademicoModelReturn, HttpStatus.OK);
+		} catch (HibernateException e) {
+			LOG.info(" Error : " + e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
-		return "prueba 3, exitosa";
+	@RequestMapping(value = "/programas-acad/addMas", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Boolean> addProgramaMasivo(@RequestBody List<ProgramaAcademicoModel> programa) {
+		
+		Boolean programaModel = null;
+		try {
+			
+			programaModel = programaAcademicoService.agregaMasiva(programa);
+			
+			return new ResponseEntity<>(programaModel, HttpStatus.OK);
+		} catch (HibernateException e) {
+			LOG.error("Error: " + e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }

@@ -3,6 +3,8 @@ package com.example.demo.Facultad_Programa.Entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,8 +18,9 @@ public class ProgramaAcademico {
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "id_facultad")
-    private Long idFacultad;
+    @ManyToOne
+    @JoinColumn(name = "id_facultad", referencedColumnName = "id")
+    private Facultad idFacultad;
 
     public long getId() {
         return id;
@@ -31,11 +34,12 @@ public class ProgramaAcademico {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public Long getIdFacultad() {
+    public Facultad getIdFacultad() {
         return idFacultad;
     }
-    public void setIdFacultad(Long idFacultad) {
+    public void setIdFacultad(Facultad idFacultad) {
         this.idFacultad = idFacultad;
     }
+    
 
 }

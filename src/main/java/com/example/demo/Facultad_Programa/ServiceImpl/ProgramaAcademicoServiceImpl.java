@@ -6,6 +6,7 @@ import java.util.List;
 import com.example.demo.Facultad_Programa.Converter.ProgramaAcademicoConverter;
 import com.example.demo.Facultad_Programa.Entity.ProgramaAcademico;
 import com.example.demo.Facultad_Programa.Model.ProgramaAcademicoModel;
+import com.example.demo.Facultad_Programa.Repository.FacultadRepository;
 import com.example.demo.Facultad_Programa.Repository.ProgramaAcademicoRepository;
 import com.example.demo.Facultad_Programa.Service.ProgramaAcademicoService;
 
@@ -26,6 +27,10 @@ public class ProgramaAcademicoServiceImpl implements ProgramaAcademicoService{
     @Qualifier("programaAcademicoConverter")
     private ProgramaAcademicoConverter programaAcademicoConverter;
 
+    @Autowired
+    @Qualifier("facultadRepository")
+    private FacultadRepository facultadRepository;
+
     @Override
     public List<ProgramaAcademicoModel> getAllProgramasAcademicos() {
         List<ProgramaAcademico> listadoProg = programaAcademicoRepository.findAll();
@@ -41,18 +46,14 @@ public class ProgramaAcademicoServiceImpl implements ProgramaAcademicoService{
     @Override
     public ProgramaAcademicoModel crearPrograma(ProgramaAcademicoModel programaModel) {
         ProgramaAcademicoModel prog = null;
+        
         try {
-
+            programaModel.setIdFacultad(facultadRepository.getById(programaModel.getFacultad()));
             ProgramaAcademico residuo = programaAcademicoRepository.save(programaAcademicoConverter.modelToEntity(programaModel));
-           
             prog = programaAcademicoConverter.entityToModel(residuo);
-        } catch (SQLGrammarException e) {
+        }  catch (NullPointerException e) {
             System.out.println(e);
-        } catch (InvalidDataAccessApiUsageException e) {
-            System.out.println(e);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e);
-        }
+        } 
         return prog;
     }
 
@@ -80,6 +81,42 @@ public class ProgramaAcademicoServiceImpl implements ProgramaAcademicoService{
             }
         }
         return programa;
+    }
+
+    @Override
+    public ProgramaAcademicoModel buscarPorNombre(String nombre) {
+        ProgramaAcademicoModel programa = new ProgramaAcademicoModel();
+        List<ProgramaAcademicoModel> listado = getAllProgramasAcademicos();
+
+        for(ProgramaAcademicoModel l : listado){
+
+            if(l.getNombre().equalsIgnoreCase(nombre)){
+                programa=l;
+            }
+        }
+        return programa;
+    }
+
+    @Override
+    public Boolean agregaMasiva(List<ProgramaAcademicoModel> programa) {
+        
+        Boolean exito = false;
+
+        for(ProgramaAcademicoModel l : programa){
+            try{
+                l.setIdFacultad(facultadRepository.getById(l.getFacultad()));
+                ProgramaAcademico residuo = programaAcademicoRepository.save(programaAcademicoConverter.modelToEntity(l));
+                
+                if(residuo!=null){
+                    exito=true;
+                }else{
+                    exito=false;
+                }
+            }catch (Exception e) {
+                //TODO: handle exception
+            }
+        }
+        return exito;
     }
     
 }
