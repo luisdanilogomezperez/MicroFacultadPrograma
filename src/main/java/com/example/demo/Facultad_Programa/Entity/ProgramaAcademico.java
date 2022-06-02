@@ -18,6 +18,7 @@ public class ProgramaAcademico {
     @Column(name = "nombre")
     private String nombre;
 
+    
     @ManyToOne
     @JoinColumn(name = "id_facultad", referencedColumnName = "id")
     private Facultad idFacultad;
@@ -40,6 +41,6 @@ public class ProgramaAcademico {
     public void setIdFacultad(Facultad idFacultad) {
         this.idFacultad = idFacultad;
     }
-    
 
+    
 }

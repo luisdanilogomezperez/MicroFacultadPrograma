@@ -43,6 +43,6 @@ public class ProgramaAcademicoModel {
     public void setFacultad(Long facultad) {
         this.facultad = facultad;
     }
-    
+
     
 }

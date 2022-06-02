@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.Facultad_Programa.Converter.ProgramaAcademicoConverter;
+import com.example.demo.Facultad_Programa.Entity.Facultad;
 import com.example.demo.Facultad_Programa.Entity.ProgramaAcademico;
+import com.example.demo.Facultad_Programa.Model.FacultadModel;
 import com.example.demo.Facultad_Programa.Model.ProgramaAcademicoModel;
 import com.example.demo.Facultad_Programa.Repository.FacultadRepository;
 import com.example.demo.Facultad_Programa.Repository.ProgramaAcademicoRepository;
@@ -31,6 +33,8 @@ public class ProgramaAcademicoServiceImpl implements ProgramaAcademicoService{
     @Qualifier("facultadRepository")
     private FacultadRepository facultadRepository;
 
+    
+
     @Override
     public List<ProgramaAcademicoModel> getAllProgramasAcademicos() {
         List<ProgramaAcademico> listadoProg = programaAcademicoRepository.findAll();
@@ -43,17 +47,29 @@ public class ProgramaAcademicoServiceImpl implements ProgramaAcademicoService{
         return lista;
     }
 
+
     @Override
     public ProgramaAcademicoModel crearPrograma(ProgramaAcademicoModel programaModel) {
         ProgramaAcademicoModel prog = null;
-        
         try {
+
+
             programaModel.setIdFacultad(facultadRepository.getById(programaModel.getFacultad()));
+
+
+            System.out.println(programaModel.getIdFacultad().getNombre());
             ProgramaAcademico residuo = programaAcademicoRepository.save(programaAcademicoConverter.modelToEntity(programaModel));
+           
             prog = programaAcademicoConverter.entityToModel(residuo);
         }  catch (NullPointerException e) {
+        } catch (SQLGrammarException e) {
             System.out.println(e);
         } 
+        } catch (InvalidDataAccessApiUsageException e) {
+            System.out.println(e);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e);
+        }
         return prog;
     }
 
@@ -70,53 +86,61 @@ public class ProgramaAcademicoServiceImpl implements ProgramaAcademicoService{
     }
 
     @Override
-    public ProgramaAcademicoModel getProgramaWithId(Long id) {
+    public ProgramaAcademicoModel getPrograma(Long id) {
+
         ProgramaAcademicoModel programa = new ProgramaAcademicoModel();
-        List<ProgramaAcademicoModel> listado = getAllProgramasAcademicos();
+        List<ProgramaAcademico> lista =programaAcademicoRepository.findAll();
 
-        for(ProgramaAcademicoModel l : listado){
-
-            if(l.getId() == id){
-                programa=l;
+        for( ProgramaAcademico p : lista){
+            if(p.getId()==id){
+                programa=programaAcademicoConverter.entityToModel(p);
             }
-        }
-        return programa;
+        } 
+
+
+
+
+        return  programa ;
     }
 
-    @Override
-    public ProgramaAcademicoModel buscarPorNombre(String nombre) {
-        ProgramaAcademicoModel programa = new ProgramaAcademicoModel();
-        List<ProgramaAcademicoModel> listado = getAllProgramasAcademicos();
 
-        for(ProgramaAcademicoModel l : listado){
 
-            if(l.getNombre().equalsIgnoreCase(nombre)){
-                programa=l;
-            }
-        }
-        return programa;
-    }
+	@Override
+	public List<String> crearProgramaMasivo(List<ProgramaAcademicoModel> programa) {
+		List<String> rta = new ArrayList<>();
+	        try {
+	        	
+	        	for(ProgramaAcademicoModel pro: programa) {
+	        		
+	                pro.setIdFacultad(facultadRepository.getById(pro.getFacultad()));
+	                
+	                
 
-    @Override
-    public Boolean agregaMasiva(List<ProgramaAcademicoModel> programa) {
-        
-        Boolean exito = false;
+	                ProgramaAcademico residuo = programaAcademicoRepository.save(programaAcademicoConverter.modelToEntity(pro));
+		            if(residuo==null) {
+		            	rta.add("Fallo al agregar a "+pro.getNombre());
+		            }else {
+		            	rta.add("Registro Exitoso");
+		            }
 
-        for(ProgramaAcademicoModel l : programa){
-            try{
-                l.setIdFacultad(facultadRepository.getById(l.getFacultad()));
-                ProgramaAcademico residuo = programaAcademicoRepository.save(programaAcademicoConverter.modelToEntity(l));
-                
-                if(residuo!=null){
-                    exito=true;
-                }else{
-                    exito=false;
-                }
-            }catch (Exception e) {
-                //TODO: handle exception
-            }
-        }
-        return exito;
-    }
+	        	}
+
+	           
+	        } catch (SQLGrammarException e) {
+	            System.out.println(e);
+	        } catch (InvalidDataAccessApiUsageException e) {
+	            System.out.println(e);
+	        } catch (IllegalArgumentException e) {
+	            System.out.println(e);
+	        }
+		return rta;
+	}
+
+
+	@Override
+	public List<ProgramaAcademicoModel> crearListadoPrograma(List<ProgramaAcademicoModel> programa) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }

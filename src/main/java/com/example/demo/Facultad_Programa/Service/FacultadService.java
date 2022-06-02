@@ -11,6 +11,9 @@ public interface FacultadService {
     public abstract FacultadModel getFacultadWithId(Long id);
 
     public abstract FacultadModel crearFacultad(FacultadModel facultad);
+    
+    public abstract List<String> crearFacultadMasivo(List<FacultadModel> facultad);
+    
 
     public abstract boolean deleteFacultad(Long id);
 

@@ -62,6 +62,22 @@ public class FacultadController {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
+	@RequestMapping(value = "/facultad/masivo", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<List<String>> addMasivo(@RequestBody List<FacultadModel> facultad) {
+		HashMap<String, String> msg = new HashMap<>();
+		LOG.info("ESTA ENTRANDO AL CONTROLLER DE RESIDUOS PROFESIONALES");
+		try {
+			
+			
+			return new ResponseEntity<>(facultadService.crearFacultadMasivo(facultad), HttpStatus.OK);
+		} catch (HibernateException e) {
+			LOG.error("Error: " + e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 	@RequestMapping(value = "/facultad/eliminar/{id}", method = RequestMethod.DELETE)
 	@ResponseBody

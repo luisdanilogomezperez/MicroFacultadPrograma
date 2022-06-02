@@ -102,25 +102,30 @@ public class FacultadServiceImpl implements FacultadService{
     }
 
 
-    @Override
-    public Boolean agregaMasiva(List<FacultadModel> facultad) {
-        Boolean exito = false;
+	@Override
+	public List<String> crearFacultadMasivo(List<FacultadModel> facultad) {
+		List<String> rta = new ArrayList<>();
+	        try {
+	        	
+	        	for(FacultadModel fac: facultad) {
+		            Facultad residuo = facultadRepository.save(facultadConverter.modelToEntity(fac));
+		            if(residuo==null) {
+		            	rta.add("Fallo al agregar a "+fac.getNombre());
+		            }else {
+		            	rta.add("Registro Exitoso");
+		            }
 
-        for(FacultadModel l : facultad){
-            try{
-                Facultad residuo = facultadRepository.save(facultadConverter.modelToEntity(l));
-                
-                if(residuo!=null){
-                    exito=true;
-                }else{
-                    exito=false;
-                }
-            }catch (Exception e) {
-                //TODO: handle exception
-            }
-        }
-        return exito;
-    }
+	        	}
 
+	           
+	        } catch (SQLGrammarException e) {
+	            System.out.println(e);
+	        } catch (InvalidDataAccessApiUsageException e) {
+	            System.out.println(e);
+	        } catch (IllegalArgumentException e) {
+	            System.out.println(e);
+	        }
+		return rta;
+	}
 
 }

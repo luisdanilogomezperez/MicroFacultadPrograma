@@ -3,7 +3,9 @@ package com.example.demo.Controller;
 import java.util.HashMap;
 import java.util.List;
 
+import com.example.demo.Facultad_Programa.Model.FacultadModel;
 import com.example.demo.Facultad_Programa.Model.ProgramaAcademicoModel;
+import com.example.demo.Facultad_Programa.Service.ProgramaAcademicoService;
 import com.example.demo.Facultad_Programa.ServiceImpl.ProgramaAcademicoServiceImpl;
 import com.google.gson.Gson;
 
@@ -52,8 +54,11 @@ public class ProgramaAcademicoController {
 	@RequestMapping(value = "/programas-acad/add", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<ProgramaAcademicoModel> addPrograma(@RequestBody ProgramaAcademicoModel programa) {
-		
+		System.out.println("----------------------------------------llega");
+
+		HashMap<String, String> msg = new HashMap<>();
 		ProgramaAcademicoModel usuarioModel = null;
+		LOG.info("ESTA ENTRANDO AL CONTROLLER DE RESIDUOS PROFESIONALES");
 		try {
 			
 			usuarioModel = programaAcademicoService.crearPrograma(programa);
@@ -79,17 +84,18 @@ public class ProgramaAcademicoController {
         return resultado;
 	}
 
-	@RequestMapping(value = "/programas-acad/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/programas-acad/buscarBy/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<ProgramaAcademicoModel> getProgramaAcad(@PathVariable long id) {
-		ProgramaAcademicoModel ProgramaAcademicoModelReturn = null;
-		try {
-			ProgramaAcademicoModelReturn = programaAcademicoService.getProgramaWithId(id);
-			return new ResponseEntity<>(ProgramaAcademicoModelReturn, HttpStatus.OK);
-		} catch (HibernateException e) {
-			LOG.info(" Error : " + e.getMessage());
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	public ProgramaAcademicoModel buscarByID(@PathVariable long id) {
+		ProgramaAcademicoModel resultado =new ProgramaAcademicoModel();
+        try {
+			resultado=programaAcademicoService.getPrograma(id);
+			
+			
+        } catch (HibernateException e) {
+            LOG.error(" Error : " + e.getMessage());
+        }
+        return resultado;
 	}
 
 	@RequestMapping(value = "/programas-acad/nombre/{nombre}", method = RequestMethod.GET)
@@ -120,5 +126,38 @@ public class ProgramaAcademicoController {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+
+
+	@RequestMapping(value = "/programas-acad/masivo", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<List<String>> addMasivo(@RequestBody List<ProgramaAcademicoModel> programa) {
+		HashMap<String, String> msg = new HashMap<>();
+
+		try {
+			
+			
+			return new ResponseEntity<>(programaAcademicoService.crearProgramaMasivo(programa), HttpStatus.OK);
+			} catch (HibernateException e) {
+				LOG.error("Error: " + e.getMessage());
+				return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+	
+//	@RequestMapping(value = "/facultad/masivo", method = RequestMethod.POST)
+//	@ResponseBody
+//	public ResponseEntity<List<String>> addMasivo(@RequestBody List<FacultadModel> facultad) {
+//		HashMap<String, String> msg = new HashMap<>();
+//		LOG.info("ESTA ENTRANDO AL CONTROLLER DE RESIDUOS PROFESIONALES");
+//		try {
+//			
+//			
+//			return new ResponseEntity<>(facultadService.crearFacultadMasivo(facultad), HttpStatus.OK);
+//		} catch (HibernateException e) {
+//			LOG.error("Error: " + e.getMessage());
+//			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
+
 
 }
