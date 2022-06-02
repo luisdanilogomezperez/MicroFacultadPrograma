@@ -65,11 +65,6 @@ public class ProgramaAcademicoServiceImpl implements ProgramaAcademicoService{
         } catch (SQLGrammarException e) {
             System.out.println(e);
         } 
-        } catch (InvalidDataAccessApiUsageException e) {
-            System.out.println(e);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e);
-        }
         return prog;
     }
 

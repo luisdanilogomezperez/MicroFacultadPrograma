@@ -128,4 +128,11 @@ public class FacultadServiceImpl implements FacultadService{
 		return rta;
 	}
 
+
+	@Override
+	public Boolean agregaMasiva(List<FacultadModel> facultad) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

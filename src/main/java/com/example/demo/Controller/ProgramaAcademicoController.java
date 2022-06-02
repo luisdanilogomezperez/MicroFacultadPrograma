@@ -103,7 +103,7 @@ public class ProgramaAcademicoController {
 	public ResponseEntity<ProgramaAcademicoModel> findProgramaXNombre(@PathVariable String nombre) {
 		ProgramaAcademicoModel ProgramaAcademicoModelReturn = null;
 		try {
-			ProgramaAcademicoModelReturn = programaAcademicoService.buscarPorNombre(nombre);
+			ProgramaAcademicoModelReturn =null;
 			return new ResponseEntity<>(ProgramaAcademicoModelReturn, HttpStatus.OK);
 		} catch (HibernateException e) {
 			LOG.info(" Error : " + e.getMessage());
@@ -111,16 +111,15 @@ public class ProgramaAcademicoController {
 		}
 	}
 
-	@RequestMapping(value = "/programas-acad/addMas", method = RequestMethod.POST)
+	@RequestMapping(value = "/programas-acad/masivo", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<Boolean> addProgramaMasivo(@RequestBody List<ProgramaAcademicoModel> programa) {
+	public ResponseEntity<List<String>> addProgramaMasivo(@RequestBody List<ProgramaAcademicoModel> programa) {
 		
 		Boolean programaModel = null;
 		try {
+			 
 			
-			programaModel = programaAcademicoService.agregaMasiva(programa);
-			
-			return new ResponseEntity<>(programaModel, HttpStatus.OK);
+			return new ResponseEntity<>(programaAcademicoService.crearProgramaMasivo(programa), HttpStatus.OK);
 		} catch (HibernateException e) {
 			LOG.error("Error: " + e.getMessage());
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
