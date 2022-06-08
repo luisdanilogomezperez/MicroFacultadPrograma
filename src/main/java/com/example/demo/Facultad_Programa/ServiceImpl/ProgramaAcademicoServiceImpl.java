@@ -83,18 +83,8 @@ public class ProgramaAcademicoServiceImpl implements ProgramaAcademicoService{
     @Override
     public ProgramaAcademicoModel getPrograma(Long id) {
 
-        ProgramaAcademicoModel programa = new ProgramaAcademicoModel();
-        List<ProgramaAcademico> lista =programaAcademicoRepository.findAll();
-
-        for( ProgramaAcademico p : lista){
-            if(p.getId()==id){
-                programa=programaAcademicoConverter.entityToModel(p);
-            }
-        } 
-
-
-
-
+        ProgramaAcademicoModel programa = programaAcademicoConverter.entityToModel(programaAcademicoRepository.getById(id));
+     
         return  programa ;
     }
 

@@ -111,20 +111,20 @@ public class ProgramaAcademicoController {
 		}
 	}
 
-	@RequestMapping(value = "/programas-acad/masivo", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<List<String>> addProgramaMasivo(@RequestBody List<ProgramaAcademicoModel> programa) {
-		
-		Boolean programaModel = null;
-		try {
-			 
-			
-			return new ResponseEntity<>(programaAcademicoService.crearProgramaMasivo(programa), HttpStatus.OK);
-		} catch (HibernateException e) {
-			LOG.error("Error: " + e.getMessage());
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+//	@RequestMapping(value = "/programas-acad/masivo", method = RequestMethod.POST)
+//	@ResponseBody
+//	public ResponseEntity<List<String>> addProgramaMasivo(@RequestBody List<ProgramaAcademicoModel> programa) {
+//		
+//		Boolean programaModel = null;
+//		try {
+//			 
+//			
+//			return new ResponseEntity<>(programaAcademicoService.crearProgramaMasivo(programa), HttpStatus.OK);
+//		} catch (HibernateException e) {
+//			LOG.error("Error: " + e.getMessage());
+//			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
 
 
 
