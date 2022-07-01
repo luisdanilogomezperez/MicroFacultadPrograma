@@ -44,5 +44,13 @@ public class ProgramaAcademicoModel {
         this.facultad = facultad;
     }
 
+	@Override
+	public String toString() {
+		return "ProgramaAcademicoModel [id=" + id + ", nombre=" + nombre + ", idFacultad=" + idFacultad + ", facultad="
+				+ facultad + "]";
+	}
+    
+    
+
     
 }

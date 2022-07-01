@@ -143,6 +143,23 @@ public class ProgramaAcademicoController {
 			}
 		}
 	
+	
+	@RequestMapping(value = "/programas-acad/editar/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Boolean> editarFacultad(@RequestBody ProgramaAcademicoModel programa,@PathVariable Long id) {
+		
+		Boolean resultado = null;
+		try {
+			
+			resultado =programaAcademicoService.editarPrograma(programa,id);
+			
+			return new ResponseEntity<>(resultado, HttpStatus.OK);
+		} catch (HibernateException e) {
+			LOG.error("Error: " + e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 //	@RequestMapping(value = "/facultad/masivo", method = RequestMethod.POST)
 //	@ResponseBody
 //	public ResponseEntity<List<String>> addMasivo(@RequestBody List<FacultadModel> facultad) {

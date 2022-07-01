@@ -120,7 +120,26 @@ public class ProgramaAcademicoServiceImpl implements ProgramaAcademicoService{
 	        }
 		return rta;
 	}
+	public Boolean editarPrograma(ProgramaAcademicoModel programaModel, Long nuevaId) {
 
+		Boolean resultado = false;
+		try {
+			System.out.print(".............---------------------------" + programaModel.toString());
+
+					if (programaAcademicoRepository.updateProgramaSetStatusForNameNative(programaModel.getId(),
+							programaModel.getNombre(), programaModel.getFacultad() ,nuevaId) != 0) {
+						resultado = true;
+					}
+				
+
+			
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return resultado;
+	}
 
 	@Override
 	public List<ProgramaAcademicoModel> crearListadoPrograma(List<ProgramaAcademicoModel> programa) {

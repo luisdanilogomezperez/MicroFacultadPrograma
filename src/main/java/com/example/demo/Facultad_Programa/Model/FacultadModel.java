@@ -23,4 +23,11 @@ public class FacultadModel {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+	@Override
+	public String toString() {
+		return "FacultadModel [id=" + id + ", nombre=" + nombre + "]";
+	}
+    
+    
 }

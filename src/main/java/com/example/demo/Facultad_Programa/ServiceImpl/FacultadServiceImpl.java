@@ -1,5 +1,6 @@
 package com.example.demo.Facultad_Programa.ServiceImpl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,118 +17,133 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 @Service("facultadServiceImpl")
-public class FacultadServiceImpl implements FacultadService{
+public class FacultadServiceImpl implements FacultadService {
 
-    @Autowired
-    @Qualifier("facultadRepository")
-    private FacultadRepository facultadRepository;
+	@Autowired
+	@Qualifier("facultadRepository")
+	private FacultadRepository facultadRepository;
 
-    @Autowired
-    @Qualifier("facultadConverter")
-    private FacultadConverter facultadConverter;
+	@Autowired
+	@Qualifier("facultadConverter")
+	private FacultadConverter facultadConverter;
 
-    @Override
-    public List<FacultadModel> getAllFacultades() {
+	@Override
+	public List<FacultadModel> getAllFacultades() {
 
-        List<Facultad> listadoFac = facultadRepository.findAll();
-        List<FacultadModel> lista = new ArrayList<>();
+		List<Facultad> listadoFac = facultadRepository.findAll();
+		List<FacultadModel> lista = new ArrayList<>();
 
-        for (Facultad f : listadoFac) {
-            lista.add(facultadConverter.entityToModel(f));
+		for (Facultad f : listadoFac) {
+			lista.add(facultadConverter.entityToModel(f));
 
-        }
-        return lista;
-    }
+		}
+		return lista;
+	}
 
+	@Override
+	public FacultadModel crearFacultad(FacultadModel facultadModel) {
 
-    @Override
-    public FacultadModel crearFacultad(FacultadModel facultadModel) {
+		FacultadModel fac = null;
+		try {
 
-        FacultadModel fac = null;
-        try {
+			Facultad residuo = facultadRepository.save(facultadConverter.modelToEntity(facultadModel));
 
-            Facultad residuo = facultadRepository.save(facultadConverter.modelToEntity(facultadModel));
-           
-            fac = facultadConverter.entityToModel(residuo);
-        } catch (SQLGrammarException e) {
-            System.out.println(e);
-        } catch (InvalidDataAccessApiUsageException e) {
-            System.out.println(e);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e);
-        }
-        return fac;
-    }
+			fac = facultadConverter.entityToModel(residuo);
+		} catch (SQLGrammarException e) {
+			System.out.println(e);
+		} catch (InvalidDataAccessApiUsageException e) {
+			System.out.println(e);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e);
+		}
+		return fac;
+	}
 
-    @Override
-    public boolean deleteFacultad(Long id) {
-        boolean resultado =false;
-        try {
-            facultadRepository.deleteById(id);  
-                 resultado=true;
-        } catch (Exception e) {
-            //TODO: handle exception
-        }
-         return resultado;
-    }
+	public Boolean editarFacultad(FacultadModel facultadModel, Long nuevaId) {
 
+		Boolean resultado = false;
+		try {
+			System.out.print(".............---------------------------" + facultadModel.toString());
+			
+					if (facultadRepository.updateFacultadSetStatusForNameNative(facultadModel.getId(),
+							facultadModel.getNombre(), nuevaId) != 0) {
+						resultado = true;
+					}
+				
 
-    @Override
-    public FacultadModel getFacultadWithId(Long id) {
-        FacultadModel facultad = new FacultadModel();
-        List<FacultadModel> listado = getAllFacultades();
+			
 
-        for(FacultadModel l : listado){
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 
-            if(l.getId() == id){
-                facultad=l;
-            }
-        }
+		return resultado;
+	}
 
-        return facultad;
-    }
+	@Override
+	public boolean deleteFacultad(Long id) {
+		boolean resultado = false;
+		try {
+			facultadRepository.deleteById(id);
+			resultado = true;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return resultado;
+	}
 
+	@Override
+	public FacultadModel getFacultadWithId(Long id) {
+		FacultadModel facultad = new FacultadModel();
+		List<FacultadModel> listado = getAllFacultades();
 
-    @Override
-    public FacultadModel buscarPorNombre(String nombre) {
-        FacultadModel facultad = new FacultadModel();
-        List<FacultadModel> listado = getAllFacultades();
+		for (FacultadModel l : listado) {
 
-        for(FacultadModel l : listado){
-            if(l.getNombre().equalsIgnoreCase(nombre)){
-                facultad = l;
-            }
-        }
-        return facultad;
-    }
+			if (l.getId() == id) {
+				facultad = l;
+			}
+		}
 
+		return facultad;
+	}
+
+	@Override
+	public FacultadModel buscarPorNombre(String nombre) {
+		FacultadModel facultad = new FacultadModel();
+		List<FacultadModel> listado = getAllFacultades();
+
+		for (FacultadModel l : listado) {
+			if (l.getNombre().equalsIgnoreCase(nombre)) {
+				facultad = l;
+			}
+		}
+		return facultad;
+	}
 
 	@Override
 	public List<String> crearFacultadMasivo(List<FacultadModel> facultad) {
 		List<String> rta = new ArrayList<>();
-	        try {
-	        	
-	        	for(FacultadModel fac: facultad) {
-		            Facultad residuo = facultadRepository.save(facultadConverter.modelToEntity(fac));
-		            if(residuo==null) {
-		            	rta.add("Fallo al agregar a "+fac.getNombre());
-		            }else {
-		            	rta.add("Registro Exitoso");
-		            }
+		try {
 
-	        	}
+			for (FacultadModel fac : facultad) {
+				Facultad residuo = facultadRepository.save(facultadConverter.modelToEntity(fac));
+				if (residuo == null) {
+					rta.add("Fallo al agregar a " + fac.getNombre());
+				} else {
+					rta.add("Registro Exitoso");
+				}
 
-	           
-	        } catch (SQLGrammarException e) {
-	            System.out.println(e);
-	        } catch (InvalidDataAccessApiUsageException e) {
-	            System.out.println(e);
-	        } catch (IllegalArgumentException e) {
-	            System.out.println(e);
-	        }
+			}
+
+		} catch (SQLGrammarException e) {
+			System.out.println(e);
+		} catch (InvalidDataAccessApiUsageException e) {
+			System.out.println(e);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e);
+		}
 		return rta;
 	}
-
 
 	@Override
 	public Boolean agregaMasiva(List<FacultadModel> facultad) {

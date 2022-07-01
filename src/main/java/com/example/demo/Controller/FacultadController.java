@@ -63,6 +63,22 @@ public class FacultadController {
 		}
 	}
 	
+	@RequestMapping(value = "/facultad/editar/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Boolean> editarFacultad(@RequestBody FacultadModel facultad,@PathVariable Long id) {
+		
+		Boolean resultado = null;
+		try {
+			
+			resultado =facultadService.editarFacultad(facultad,id);
+			
+			return new ResponseEntity<>(resultado, HttpStatus.OK);
+		} catch (HibernateException e) {
+			LOG.error("Error: " + e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	
 	@RequestMapping(value = "/facultad/masivo", method = RequestMethod.POST)
 	@ResponseBody
